@@ -1,0 +1,23 @@
+// User function template for C++
+class Solution {
+  public:
+    void immediateSmaller(vector<int>& arr) {
+        //  code here
+        stack<int> s;
+        s.push(-1);
+        
+        int n = arr.size();
+        vector<int> ans(n);
+        
+        for(int i = n -1; i>=0; i--){
+            int currElement = arr[i];
+            while(s.top()>= currElement){
+                s.pop();
+            }
+            ans[i] = s.top();
+            //push the currElement itself now
+            s.push(currElement);
+        }
+        arr = ans;
+    }
+};

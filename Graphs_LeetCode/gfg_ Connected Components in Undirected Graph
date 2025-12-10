@@ -1,0 +1,53 @@
+class Solution {
+  public:
+    // BFS to get one connected component
+    vector<int> bfsTraversal(int src, vector<vector<int>> &adj, unordered_map<int, bool> &visited) {
+        
+        vector<int> component;
+        queue<int> q;
+        q.push(src);
+        visited[src] = true;
+
+        while (!q.empty()) {
+            int frontNode = q.front();
+            q.pop();
+            component.push_back(frontNode);
+
+            for (auto nbr : adj[frontNode]) {
+                if (!visited[nbr]) {
+                    visited[nbr] = true;
+                    q.push(nbr);
+                }
+            }
+        }
+        return component;
+    }
+
+    
+    vector<vector<int>> getComponents(int V, vector<vector<int>>& edges) {
+        // Step 1: Build adjacency list
+        vector<vector<int>> adj(V);
+        for (auto &e : edges) {
+            
+            int u = e[0];
+            int v = e[1];
+            
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+
+        // Step 2: Initialize visited
+        unordered_map<int, bool> visited;
+        vector<vector<int>> components; // yeh final output result ke liye bnaya hai
+
+        // Step 3: Run BFS for each unvisited node
+        for (int i = 0; i < V; i++) {
+            if (!visited[i]) {
+                vector<int> comp = bfsTraversal(i, adj, visited);
+                components.push_back(comp);
+            }
+        }
+
+        return components;
+    }
+};
